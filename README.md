@@ -11,8 +11,8 @@ ws_fusion_camera
      │                         node: color_pc   (fusion get colored point cloud)
      │                         node: topic_test (subscribe and test topic)
      └───package: launch_file
-                                  launch file: fusion.launch(color_pc)
-                                  launch file: test_topic.launch(topic_test)
+                               launch file: fusion.launch(color_pc)
+                               launch file: test_topic.launch(topic_test)
 
 ```
 
@@ -40,11 +40,11 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 ```roslaunch launch_file fusion.launch``` 
 
 ## 三、效果
+
 <p align="center"><img src="./result/result.png"  width=50%></p>
 <h6 align="center"> 融合效果</h6>
+
 ## 四、参考资料
-
-
 
 [1] [hikvision相机装ROS驱动](https://blog.csdn.net/qq_37534947/article/details/116432115)
 
