@@ -18,10 +18,11 @@ ws_fusion_camera
 
 ## 二、使用方法
 1. 安装ROS
-2. 安装livox和hikvision驱动<sup>[1, 2]</sup>
-3. 安装仓库
+2. 安装livox和hikvision驱动<sup>[1, 2, 3]</sup>
+3. 安装本仓库
 ```
 mkdir -p ~/xxx/src
+cd ~/xxx/src
 catkin_init_workspace
 git clone https://github.com/GCaptainNemo/fusion-lidar-camera-ROS.git
 mv ./fusion-lidar-camera-ROS/ws_fusion_camera/src/color_pc  ./
@@ -32,7 +33,7 @@ catkin_make
 ```
 4. 运行相机和激光雷达设备驱动
 ```
-roslaunch livox_ros_driver livox_lidar_rviz.launch bd_list:="xxx"
+roslaunch livox_ros_driver livox_lidar.launch
 roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 
 ```
@@ -48,7 +49,9 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 
 [1] [hikvision相机装ROS驱动](https://blog.csdn.net/qq_37534947/article/details/116432115)
 
-[2] [livox 驱动和SDK安装](https://github.com/Livox-SDK/Livox-SDK)
+[2] [livox 驱动安装](https://github.com/Livox-SDK/livox_ros_driver)
+
+[3] [livox SDK安装](https://github.com/Livox-SDK/Livox-SDK)
 
 
 
