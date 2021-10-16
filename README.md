@@ -43,7 +43,11 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 <p align="center"><img src="./result/result.png"  width=50%></p>
 <h6 align="center"> 融合效果</h6>
 ## 四、参考资料
+
+
+
 [1] [hikvision相机装ROS驱动](https://blog.csdn.net/qq_37534947/article/details/116432115)
+
 [2] [livox 驱动和SDK安装](https://github.com/Livox-SDK/Livox-SDK)
 
 
