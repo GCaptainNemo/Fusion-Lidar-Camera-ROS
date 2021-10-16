@@ -8,10 +8,11 @@ ws_fusion_camera
 └───src
      │
      └───package: color_pc
-       |                        node: color_pc   (fusion get colored point cloud)
-     │                       node: topic_test (subscribe and test topic)
+     │                         node: color_pc   (fusion get colored point cloud)
+     │                         node: topic_test (subscribe and test topic)
      └───package: launch_file
-                                launch node file: fusion.launch(color_pc),  test_topic.launch(topic_test)
+                                  launch file: fusion.launch(color_pc)
+                                  launch file: test_topic.launch(topic_test)
 
 ```
 
