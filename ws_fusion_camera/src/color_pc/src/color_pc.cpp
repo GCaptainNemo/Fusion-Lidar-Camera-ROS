@@ -26,14 +26,15 @@
 #define W Wmax
 
 static bool IS_IMAGE_CORRECTION = true;
-
+std::mutex mut_image;
+std::mutex mut_pc;
 
 
 //livox点云消息包含xyz和intensity
 pcl::PointCloud<pcl::PointXYZI>::Ptr raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
 pcl::PointCloud<pcl::PointXYZI>::Ptr linshi_raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
 cv::Mat image_color(H, W, CV_8UC3);
-cv::Mat * linshi_image_color;
+cv::Mat linshi_image_color;
 
 // 发布判断
 bool is_rec_image = false;
@@ -89,8 +90,8 @@ public:
     // it = image_transport::ImageTransport(nh);
     this->set_calib();
     // Subscribe to input video feed and publish output video feed
-    image_sub = it.subscribe("/hik_cam_node/hik_camera", 10, &ImageLivoxFusion::imageCallback, this);
-    livox_sub = nh.subscribe("/livox/lidar", 10, &ImageLivoxFusion::livoxCallback, this);
+    image_sub = it.subscribe("/hik_cam_node/hik_camera", 100, &ImageLivoxFusion::imageCallback, this);
+    livox_sub = nh.subscribe("/livox/lidar", 100, &ImageLivoxFusion::livoxCallback, this);
    
     image_pub = it.advertise("/hik_cam_node/undist_camera", 10);    
     livox_pub = nh.advertise<sensor_msgs::PointCloud2>("livox/color_lidar", 10);
@@ -129,8 +130,13 @@ void * ImageLivoxFusion::publish_thread(void * args)
   
     if (is_rec_image && is_rec_lidar)
     {
+      mut_pc.lock();
       linshi_raw_pcl_ptr = raw_pcl_ptr;
-      linshi_image_color = &image_color;
+      mut_pc.unlock();
+      mut_image.lock();
+      linshi_image_color = image_color.clone();
+      mut_image.unlock();
+      
       pcl::PointCloud<PointType>::Ptr pc_xyzrgb(new pcl::PointCloud<PointType>);
       const int size = raw_pcl_ptr->points.size();
       for (int i = 0; i < size; i++)
@@ -156,9 +162,9 @@ void * ImageLivoxFusion::publish_thread(void * args)
             //  imread BGR（BITMAP）
             int row = int(y);
             int column = int(x);
-            pointRGB.r = linshi_image_color->at<cv::Vec3b>(row, column)[2];
-            pointRGB.g = linshi_image_color->at<cv::Vec3b>(row, column)[1];
-            pointRGB.b = linshi_image_color->at<cv::Vec3b>(row, column)[0];
+            pointRGB.r = linshi_image_color.at<cv::Vec3b>(row, column)[2];
+            pointRGB.g = linshi_image_color.at<cv::Vec3b>(row, column)[1];
+            pointRGB.b = linshi_image_color.at<cv::Vec3b>(row, column)[0];
            
             // pointRGB.intensity = raw_pcl_ptr->points[i].intensity; //继承之前点云的intensity
             pc_xyzrgb->push_back(pointRGB);
@@ -246,8 +252,9 @@ void ImageLivoxFusion::livoxCallback(const sensor_msgs::PointCloud2ConstPtr & ms
 {
   // 将接收到的消息打印出来
   // ROS_INFO("GET LIVOX");
-  
+  mut_pc.lock();
   pcl::fromROSMsg(*msg, *raw_pcl_ptr);	
+  mut_pc.unlock();
   is_rec_lidar = true;
 }
 
@@ -266,12 +273,16 @@ void ImageLivoxFusion::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     return;
   }
   // image correction
+  mut_image.lock();
   if(IS_IMAGE_CORRECTION)
+  {
     cv::undistort(cv_ptr->image, image_color, this->intrinsic_matrix, this->dist_matrix);
+    cv_ptr->image = image_color.clone();
+  }
   else
     image_color = cv_ptr->image.clone();
-
-  cv_ptr->image = image_color.clone();
+  mut_image.unlock();
+  
   is_rec_image = true;
   image_pub.publish(cv_ptr->toImageMsg());
 }
@@ -322,7 +333,8 @@ int main(int argc, char** argv)
   if (strcmp(argv[1], "true") == 0){IS_IMAGE_CORRECTION = true; ROS_INFO("correct image");}
   else {IS_IMAGE_CORRECTION = false;ROS_INFO("don't correct image");}
   ImageLivoxFusion ic;
-  
-  ros::spin();
+  ros::MultiThreadedSpinner spinner(4);
+  spinner.spin();
+  // ros::spin();
   return 0;
 }
