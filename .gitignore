@@ -1,0 +1,5 @@
+ws_fusion_camera/build
+ws_fusion_camera/devel
+ws_fusion_camera/.catkin_workspace
+
+*.json
