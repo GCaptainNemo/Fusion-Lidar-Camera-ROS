@@ -23,7 +23,8 @@
 
 
 static bool IS_IMAGE_CORRECTION = true;
-// std::mutex mut_image;
+
+std::mutex mut_img;
 std::mutex mut_pc;
 
 
@@ -133,10 +134,12 @@ void * ImageLivoxFusion::publish_thread(void * args)
     {
       mut_pc.lock();
       pcl::copyPointCloud (*raw_pcl_ptr, *linshi_raw_pcl_ptr);
-      // linshi_raw_pcl_ptr = raw_pcl_ptr;
-      linshi_image_color = image_color.clone();
       mut_pc.unlock();
-      
+
+      mut_img.lock();
+      linshi_image_color = image_color.clone();
+      mut_img.unlock();
+
       pcl::PointCloud<PointType>::Ptr pc_xyzrgb(new pcl::PointCloud<PointType>);
       const int size = linshi_raw_pcl_ptr->points.size();
       for (int i = 0; i < size; i++)
@@ -265,8 +268,9 @@ void ImageLivoxFusion::set_param()
 
 void ImageLivoxFusion::livoxCallback(const sensor_msgs::PointCloud2ConstPtr & msg)
 {
-
+  mut_pc.lock();
   pcl::fromROSMsg(*msg, *raw_pcl_ptr);	
+  mut_pc.unlock();
   is_rec_lidar = true;
 }
 
@@ -286,12 +290,17 @@ void ImageLivoxFusion::imageCallback(const sensor_msgs::ImageConstPtr& msg)
   // image correction
   if(IS_IMAGE_CORRECTION)
   {
+    mut_img.lock();
     cv::undistort(cv_ptr->image, image_color, this->intrinsic_matrix, this->dist_matrix);
+    mut_img.unlock();
     cv_ptr->image = image_color;
   }
   else
-    image_color = cv_ptr->image;
-  
+  {
+    mut_img.lock();  
+    image_color = cv_ptr->image.clone();
+    mut_img.unlock();
+  }
   is_rec_image = true;
   image_pub.publish(cv_ptr->toImageMsg());
 }
@@ -342,7 +351,8 @@ int main(int argc, char** argv)
   if (strcmp(argv[1], "true") == 0){IS_IMAGE_CORRECTION = true; ROS_INFO("correct image");}
   else {IS_IMAGE_CORRECTION = false;ROS_INFO("don't correct image");}
   ImageLivoxFusion ic;
-  ros::MultiThreadedSpinner spinner(10);  //节点多线程
+  ros::MultiThreadedSpinner spinner(4);  //节点多线程
   spinner.spin();   
+  // ros::spin();
   return 0;
 }
