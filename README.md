@@ -9,10 +9,13 @@ ws_fusion_camera
      │
      └───package: color_pc
      │                         node: color_pc   (fusion get colored point cloud)
+     │                         node: intetral   (intetral colored point cloud)
      │                         node: topic_test (subscribe and test topic)
      └───package: launch_file
                                launch file: fusion.launch(color_pc)
+                               launch file: integral.launch(integral)
                                launch file: test_topic.launch(topic_test)
+
 
 ```
 
@@ -44,6 +47,9 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 
 <p align="center"><img src="./result/result.png"  width=50%></p>
 <h6 align="center"> 融合效果</h6>
+
+<p align="center"><img src="./result/integral.png"  width=50%></p>
+<h6 align="center"> 点云时间积分效果</h6>
 
 ## 四、参考资料
 
