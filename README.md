@@ -19,6 +19,10 @@ ws_fusion_camera
 
 ```
 
+调试环境：
+* Ubuntu 18.04 ROS melodic
+* PCL 1.8
+
 ## 二、使用方法
 1. 安装ROS
 2. 安装livox和hikvision驱动<sup>[1, 2, 3]</sup>
@@ -40,6 +44,11 @@ roslaunch livox_ros_driver livox_lidar.launch
 roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 
 ```
+
+或者下载ROS-bag测试数据
+地址: https://pan.baidu.com/s/1w7bDKjnXJyfzvX33t-spTA
+提取码: n8px
+
 5. 运行color_pc数据融合节点，并在rviz中显示
 ```roslaunch launch_file fusion.launch``` 
 
