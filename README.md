@@ -22,7 +22,7 @@ ws_fusion_camera
 调试环境：
 * Ubuntu 18.04 ROS melodic
 * PCL 1.8
-* 硬件: livox Horizon激光雷达 && Hikvision 网络相机
+* 硬件: livox Horizon激光雷达 && Hikvision 网络相机DS-2ZMN2007(C)
 
 **注意:由于Hikvision网络相机不支持SDK软触发，因此两个设备无法做时间同步，硬件配置适用于对时间同步性要求较低的任务**
 
