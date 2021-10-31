@@ -100,15 +100,6 @@ public:
     image_pub = it.advertise("/hik_cam_node/undist_camera", 10);    
     livox_pub = nh.advertise<sensor_msgs::PointCloud2>("livox/color_lidar", 10);
     int ret1 = pthread_create(&tids1_, NULL,  publish_thread, this); //**point5**：线程创建，函数参
-     // message_filters::Subscriber<sensor_msgs::Image> image_sub(nh, "/hik_cam_node/hik_camera",10);
-    // message_filters::Subscriber<sensor_msgs::PointCloud2> livox_sub(nh, "/livox/lidar",10);
-    // multi sensor synchronized
-    // typedef sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::PointCloud2> syncPolicy;
-    // sync = new TimeSynchronizer<sensor_msgs::Image, sensor_msgs::PointCloud2> (image_sub, livox_sub, 10);
-    // Synchronizer<syncPolicy> sync(syncPolicy(10), image_sub, livox_sub);  
-    // 指定一个回调函数，就可以实现两个话题数据的同步获取
-    // sync->registerCallback(boost::bind(&ImageLivoxFusion::integral_callback, this, _1, _2));
-
     ROS_INFO("START LISTENING\n");
     
     
@@ -182,7 +173,7 @@ void * ImageLivoxFusion::publish_thread(void * args)
 
       pcl::toROSMsg(*integral_color_pcl_ptr,  this_sub->colored_msg);  // 将点云转化为ROS消息发布
       this_sub->colored_msg.header.frame_id = "sensor_frame";
-      this_sub->colored_msg.header.stamp = ros::Time::now();; // 时间戳和/livox/lidar 一致
+      this_sub->colored_msg.header.stamp = ros::Time::now();; 
       this_sub->livox_pub.publish(this_sub->colored_msg); 
       loop_rate.sleep();
     }
@@ -308,43 +299,6 @@ void ImageLivoxFusion::imageCallback(const sensor_msgs::ImageConstPtr& msg)
   is_rec_image = true;
   image_pub.publish(cv_ptr->toImageMsg());
 }
-
-
-void ImageLivoxFusion::integral_callback(const sensor_msgs::ImageConstPtr &img_msg, const sensor_msgs::PointCloud2ConstPtr &pc_msg)
-{
-  // /////////////////////////////////////////////////////////////////////////////////////////////////
-  // camera
-  // /////////////////////////////////////////////////////////////////////////////////////////////////
-  try
-  {
-    cv_ptr = cv_bridge::toCvCopy(img_msg, sensor_msgs::image_encodings::BGR8);
-  }
-  catch (cv_bridge::Exception& e)
-  {
-    ROS_ERROR("cv_bridge exception: %s", e.what());
-    return;
-  }
-  // image correction
-  cv::undistort(cv_ptr->image, image_color, this->intrinsic_matrix, this->dist_matrix);
-  cv_ptr->image = image_color.clone();
-  
-  image_pub.publish(cv_ptr->toImageMsg());
-  ROS_INFO("FINISH IMAGE\n");
-  // /////////////////////////////////////////////////////////////////////////////////////////////////
-  // lidar
-  // /////////////////////////////////////////////////////////////////////////////////////////////////
-  // sensor_msgs::PointCloud out_pointcloud;
-	// sensor_msgs::convertPointCloud2ToPointCloud(*pc_msg, out_pointcloud);
-  // pcl::PointCloud<pcl::PointXYZRGB>::Ptr pc_xyzrgb(new pcl::PointCloud<pcl::PointXYZRGB>);
-  // this->project_get_rgb(&out_pointcloud, undist_image, pc_xyzrgb);
-  // pc_xyzrgb->width = 1;
-  // pc_xyzrgb->height = pc_xyzrgb->size();
-  // ROS_INFO("size = %d \n", pc_xyzrgb->size());
-  // pcl::toROSMsg( *pc_xyzrgb,  colored_msg);  //将点云转化为消息才能发布
-  // colored_msg.header.frame_id = "sensor_frame";//帧id改成和velodyne一样的
-  // livox_pub.publish(colored_msg); 
-}
-
 
 
 int main(int argc, char** argv)

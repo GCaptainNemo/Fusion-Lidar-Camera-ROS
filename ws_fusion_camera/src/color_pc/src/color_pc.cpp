@@ -106,7 +106,6 @@ public:
   void set_param();
   void livoxCallback(const sensor_msgs::PointCloud2ConstPtr & msg);
   void imageCallback(const sensor_msgs::ImageConstPtr& msg);
-  void integral_callback(const sensor_msgs::ImageConstPtr &img_msg, const sensor_msgs::PointCloud2ConstPtr &pc_msg);
   static void * publish_thread(void *  this_sub);
 };
 
