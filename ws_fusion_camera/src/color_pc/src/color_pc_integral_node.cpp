@@ -26,12 +26,16 @@ static bool IS_IMAGE_CORRECTION = true;
 
 std::mutex mut_img;
 std::mutex mut_pc;
+typedef pcl::PointXYZRGB PointType;
+typedef pcl::PointCloud<PointType> PointCloudXYZRGB;
+constexpr int MARK_PUB_EPOCH = 20;
+int EPOCH = 0;
 
 
 //livox点云消息包含xyz和intensity
 pcl::PointCloud<pcl::PointXYZI>::Ptr raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
 pcl::PointCloud<pcl::PointXYZI>::Ptr linshi_raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr integral_color_pcl_ptr(new pcl::PointCloud<pcl::PointXYZRGB>); 
+PointCloudXYZRGB::Ptr integral_color_pcl_ptr(new PointCloudXYZRGB); 
 
 // pcl::PointCloud<pcl::PointXYZI> linshi_raw_pcl_ptr; 
 
@@ -56,9 +60,7 @@ bool is_rec_lidar = false;
 // 	(float, x, x)(float, y, y)(float, z, z)(float, rgb, rgb)(uint32_t, label, label)(float, intensity, intensity))
 
 
-// typedef PointXYZRGBIL PointType;
 
-typedef pcl::PointXYZRGB PointType;
 
 
 class ImageLivoxFusion
@@ -133,7 +135,7 @@ void * ImageLivoxFusion::publish_thread(void * args)
       linshi_image_color = image_color.clone();
       mut_img.unlock();
       
-      pcl::PointCloud<PointType>::Ptr pc_xyzrgb(new pcl::PointCloud<PointType>);
+      PointCloudXYZRGB::Ptr pc_xyzrgb(new PointCloudXYZRGB);
       const int size = linshi_raw_pcl_ptr->points.size();
       for (int i = 0; i < size; i++)
       {
@@ -168,13 +170,16 @@ void * ImageLivoxFusion::publish_thread(void * args)
         }
       }
       *integral_color_pcl_ptr = (*integral_color_pcl_ptr) + (*pc_xyzrgb);
-      integral_color_pcl_ptr->width = 1;
-      integral_color_pcl_ptr->height = integral_color_pcl_ptr->points.size();
-
-      pcl::toROSMsg(*integral_color_pcl_ptr,  this_sub->colored_msg);  // 将点云转化为ROS消息发布
-      this_sub->colored_msg.header.frame_id = "sensor_frame";
-      this_sub->colored_msg.header.stamp = ros::Time::now();; 
-      this_sub->livox_pub.publish(this_sub->colored_msg); 
+      EPOCH += 1;
+      if(EPOCH % MARK_PUB_EPOCH == 0){
+        integral_color_pcl_ptr->width = 1;
+        integral_color_pcl_ptr->height = integral_color_pcl_ptr->points.size();
+        pcl::toROSMsg(*integral_color_pcl_ptr,  this_sub->colored_msg);  // 将点云转化为ROS消息发布
+        this_sub->colored_msg.header.frame_id = "sensor_frame";
+        this_sub->colored_msg.header.stamp = ros::Time::now();; 
+        this_sub->livox_pub.publish(this_sub->colored_msg); 
+        EPOCH = 0;
+      }
       loop_rate.sleep();
     }
   }
