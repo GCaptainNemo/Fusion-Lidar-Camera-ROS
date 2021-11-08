@@ -95,7 +95,7 @@ public:
     this->set_param();
     // Subscribe to input video feed and publish output video feed
     image_sub = it.subscribe("/hik_cam_node/hik_camera", 100, &ImageLivoxFusion::imageCallback, this);
-    livox_sub = nh.subscribe("/livox/lidar", 100, &ImageLivoxFusion::livoxCallback, this);
+    livox_sub = nh.subscribe("/livox_repub", 100, &ImageLivoxFusion::livoxCallback, this);
    
     image_pub = it.advertise("/hik_cam_node/undist_camera", 10);    
     livox_pub = nh.advertise<sensor_msgs::PointCloud2>("livox/color_lidar", 10);
@@ -186,7 +186,7 @@ void ImageLivoxFusion::set_param()
   // extrinsic matrix parameters
   XmlRpc::XmlRpcValue param_list;
   std::vector<double> Extrin_matrix;
-  if(!nh.getParam("/integral/CameraExtrinsicMat/data", param_list))
+  if(!nh.getParam("/integral_node/CameraExtrinsicMat/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
@@ -200,7 +200,7 @@ void ImageLivoxFusion::set_param()
   
   // Intrinsic matrix parameters
   std::vector<double> Intrinsic;
-  if(!nh.getParam("/integral/CameraMat/data", param_list))
+  if(!nh.getParam("/integral_node/CameraMat/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
@@ -214,7 +214,7 @@ void ImageLivoxFusion::set_param()
 
   // 5 distortion parameters
   std::vector<double> dist;
-  if(!nh.getParam("/integral/CameraMat/data", param_list))
+  if(!nh.getParam("/integral_node/CameraMat/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
@@ -228,7 +228,7 @@ void ImageLivoxFusion::set_param()
   
   // img size
   std::vector<int> img_size;
-  if(!nh.getParam("/integral/ImageSize", param_list))
+  if(!nh.getParam("/integral_node/ImageSize", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {

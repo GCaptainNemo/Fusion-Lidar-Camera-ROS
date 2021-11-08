@@ -8,9 +8,9 @@ ws_fusion_camera
 └───src
      │
      └───package: color_pc
-                     │    node: color_pc   (fusion get colored point cloud)
-                     │    node: intetral   (intetral colored point cloud)
-                     │    node: color_pc_sync (use ROS message_filters::Synchronizer)
+                     │    node: color_pc_node   (fusion get colored point cloud)
+                     │    node: intetral_node   (intetral colored point cloud)
+                     │    node: color_pc_sync_node (use ROS message_filters::Synchronizer)
                      │
                      └───launch
                                launch file: fusion.launch(color_pc & rviz)
