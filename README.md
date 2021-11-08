@@ -1,6 +1,6 @@
 # fusion-lidar-camera-ROS
 ## 一、介绍
-本仓库是一个ROS工作空间，其中ws_fusion_camera/src下是两个工具包color_pc和launch_file
+本仓库是一个ROS工作空间，其中ws_fusion_camera/src有一个工具包color_pc
 ```
 ws_fusion_camera
 │   README.md
@@ -8,13 +8,15 @@ ws_fusion_camera
 └───src
      │
      └───package: color_pc
-     │                         node: color_pc   (fusion get colored point cloud)
-     │                         node: intetral   (intetral colored point cloud)
-     │                         node: topic_test (subscribe and test topic)
-     └───package: launch_file
-                               launch file: fusion.launch(color_pc)
-                               launch file: integral.launch(integral)
-                               launch file: test_topic.launch(topic_test)
+                     │    node: color_pc   (fusion get colored point cloud)
+                     │    node: intetral   (intetral colored point cloud)
+                     │    node: color_pc_sync (use ROS message_filters::Synchronizer)
+                     │
+                     └───launch
+                               launch file: fusion.launch(color_pc & rviz)
+                               launch file: integral.launch(integral & rviz)
+                               launch file: sync_fusion.launch(color_pc_sync & rviz)
+		               	
 
 
 ```
@@ -53,7 +55,7 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 提取码: n8px
 
 5. 运行color_pc数据融合节点，并在rviz中显示
-```roslaunch launch_file fusion.launch``` 
+```roslaunch color_pc fusion.launch``` 
 
 ## 三、效果
 

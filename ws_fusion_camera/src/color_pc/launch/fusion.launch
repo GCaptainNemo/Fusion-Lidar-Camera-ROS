@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="color_pc" type="color_pc" name="color_pc" args="false" output="screen">
+		<rosparam file="$(find color_pc)/config/param2.yaml" command="load"/>	
+	</node>
+	<node pkg="rviz" type="rviz" name="rviz_color_pc" args="-d $(find color_pc)/config/show.rviz" required="true" />
+</launch>

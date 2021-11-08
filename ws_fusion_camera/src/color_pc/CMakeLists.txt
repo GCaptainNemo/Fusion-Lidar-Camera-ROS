@@ -132,8 +132,6 @@ add_executable(color_pc_sync src/color_pc_sync.cpp)
 target_link_libraries(color_pc_sync ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} )
 add_executable(integral src/color_pc_integral.cpp)
 target_link_libraries(integral ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} )
-add_executable(topic_test src/topic_test.cpp)
-target_link_libraries(topic_test ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 
 ## Declare a C++ library
