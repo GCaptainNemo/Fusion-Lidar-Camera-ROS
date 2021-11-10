@@ -55,7 +55,9 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 提取码: n8px
 
 5. 运行color_pc数据融合节点，并在rviz中显示
-```roslaunch color_pc fusion.launch``` 
+```
+roslaunch color_pc fusion.launch
+``` 
 
 ## 三、效果
 
