@@ -60,12 +60,16 @@ roslaunch color_pc fusion.launch
 ``` 
 
 ## 三、效果
-
-<p align="center"><img src="./result/result.png"  width=50%></p>
-<h6 align="center"> 融合效果</h6>
-
-<p align="center"><img src="./result/integral.png"  width=50%></p>
-<h6 align="center"> 点云时间积分效果</h6>
+<table frame=void rules=none>
+<tr>
+    <td><p align="center"><img src="./result/result.png"  border=0 width=50%></p></td>
+    <td><p align="center"><img src="./result/integral.png" border=0 width=50%></p></td>
+</tr>
+<tr>
+    <th>融合效果</th>
+    <th>点云时间积分效果</th>
+</tr>
+</table>
 
 ## 四、参考资料
 
