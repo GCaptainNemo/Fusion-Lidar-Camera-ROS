@@ -180,6 +180,7 @@ void ImageLivoxFusion::set_param()
   std::vector<double> Extrin_matrix;
   if(!nh.getParam("/color_pc_node/CameraExtrinsicMat/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
+  ROS_INFO("\n get extrinsic parameter:");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
       XmlRpc::XmlRpcValue tmp_value = param_list[i];
@@ -189,11 +190,11 @@ void ImageLivoxFusion::set_param()
         ROS_INFO("PARAME SIZE = %f", double(tmp_value));
       }
   }
-  
   // Intrinsic matrix parameters
   std::vector<double> Intrinsic;
   if(!nh.getParam("/color_pc_node/CameraMat/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
+  ROS_INFO("\n get intrinsic parameter:");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
       XmlRpc::XmlRpcValue tmp_value = param_list[i];
@@ -204,10 +205,12 @@ void ImageLivoxFusion::set_param()
       }
   }
 
+
   // 5 distortion parameters
   std::vector<double> dist;
-  if(!nh.getParam("/color_pc_node/CameraMat/data", param_list))
+  if(!nh.getParam("/color_pc_node/DistCoeff/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
+  ROS_INFO("\n get distortion parameter:");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
       XmlRpc::XmlRpcValue tmp_value = param_list[i];
@@ -222,6 +225,7 @@ void ImageLivoxFusion::set_param()
   std::vector<int> img_size;
   if(!nh.getParam("/color_pc_node/ImageSize", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
+  ROS_INFO("\n get image size:");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {
       XmlRpc::XmlRpcValue tmp_value = param_list[i];
@@ -279,8 +283,10 @@ void ImageLivoxFusion::imageCallback(const sensor_msgs::ImageConstPtr& msg)
   {
     mut_img.lock();
     cv::undistort(cv_ptr->image, image_color, this->intrinsic_matrix, this->dist_matrix);
+    // image_color = cv_ptr->image.clone(); 
+    cv_ptr->image = image_color.clone();
     mut_img.unlock();
-    cv_ptr->image = image_color;
+
   }
   else
   {

@@ -152,7 +152,7 @@ void ImageLivoxFusion::set_param()
 
   // 5 distortion parameters
   std::vector<double> dist;
-  if(!nh.getParam("/color_pc_sync_node/CameraMat/data", param_list))
+  if(!nh.getParam("/color_pc_sync_node/DistCoeff/data", param_list))
       ROS_ERROR("Failed to get extrinsic parameter.");
   for (size_t i = 0; i < param_list.size(); ++i) 
   {

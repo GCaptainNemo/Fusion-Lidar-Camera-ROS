@@ -1,6 +1,6 @@
 <launch>
-	<node pkg="color_pc" type="color_pc_node" name="color_pc_node" args="false" output="screen">
-		<rosparam file="$(find color_pc)/config/param2.yaml" command="load"/>	
+	<node pkg="color_pc" type="color_pc_node" name="color_pc_node" args="true" output="screen">
+		<rosparam file="$(find color_pc)/config/param3.yaml" command="load"/>	
                 <remap from="/livox_repub" to="/livox/lidar" />
 	</node>
 	<node pkg="rviz" type="rviz" name="rviz_color_pc" args="-d $(find color_pc)/config/show.rviz" required="true" />
