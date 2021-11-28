@@ -46,6 +46,8 @@ add_executable(integral_node src/color_pc_integral_node.cpp)
 target_link_libraries(integral_node ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} )
 add_executable(filter_node src/filter_node.cpp)
 target_link_libraries(filter_node ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} )
+add_executable(snapshot src/snapshot.cpp)
+target_link_libraries(snapshot ${catkin_LIBRARIES} ${OpenCV_LIBS}  )
 
 
 ## Declare a C++ library
