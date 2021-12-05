@@ -28,7 +28,7 @@ std::mutex mut_img;
 std::mutex mut_pc;
 typedef pcl::PointXYZRGB PointType;
 typedef pcl::PointCloud<PointType> PointCloudXYZRGB;
-constexpr int MARK_PUB_EPOCH = 20;
+constexpr int MARK_PUB_EPOCH = 3;
 int EPOCH = 0;
 
 

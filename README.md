@@ -81,16 +81,24 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 ```
 
 或者下载ROS-bag测试数据
-地址: https://pan.baidu.com/s/1w7bDKjnXJyfzvX33t-spTA
-提取码: n8px
+地址: https://pan.baidu.com/s/1Uh-TypdW2ZP8HlXjTGw11w
+提取码: s2pi
 
 5. 运行color_pc数据融合节点，并在rviz中显示
 ```
+rosbag play static.bag
 roslaunch color_pc fusion.launch
 ```
+**or 增加点云滤波节点**
+
+```
+rosbag play static_msg.bag
+roslaunch color_pc fusion_filter.launch
+```
+
 
 ## 三、效果
-<img src="./result/result.png"  border=0 width=48%><img src="./result/integral.png" border=0 width=48%>
+<img src="./result/result.gif"  border=0 width=48%><img src="./result/integral.gif" border=0 width=48%>
 
 <h6 align="center">单帧融合效果(左)，点云时间积分效果(右)</h6>
 
