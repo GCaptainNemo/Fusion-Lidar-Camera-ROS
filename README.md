@@ -1,6 +1,9 @@
 # fusion-lidar-camera-ROS
 ## 一、介绍
+## 1.1 仓库目录
+
 本仓库是一个ROS工作空间，其中ws_fusion_camera/src有一个工具包color_pc
+
 ```
 ws_fusion_camera
 │   README.md
@@ -16,40 +19,44 @@ ws_fusion_camera
                                launch file: fusion.launch(color_pc & rviz)
                                launch file: integral.launch(integral & rviz)
                                launch file: sync_fusion.launch(color_pc_sync & rviz)
-		               	
-
-
 ```
 
-调试环境：
+
+
+## 1.2 环境与依赖
+
 * Ubuntu 18.04 ROS melodic. [ROS installation](http://wiki.ros.org/ROS/Installation)
 
 * PCL 1.8. [PCL installation](https://pointclouds.org/downloads/#linux)
 
 * OpenCV 3.2.0 [Opencv Installation](http://opencv.org)
 
-* 硬件: livox Horizon激光雷达 && Hikvision 网络相机DS-2ZMN2007(C)
+  
 
-  <table >
-      	<tr>
-              	<th align="center" valign="middle">Item</th>
-              	<th align="center" valign="middle">Pics</th>
-              	<th align="center" valign="middle">Shopping Link</th>
-          </tr>
-      	<tr>
-      	    	<td align="center" valign="middle">Livox Horizon</td>
-          		<td align="center" valign="middle"><img src="./result/lidar.png" width=25% /></td>
-          		<td align="center" valign="middle">  <a href ="https://www.livoxtech.com/horizon"> Lidar </a> 		    		</td>
-      	</tr>
-      	<tr>
-            	 	 <td align="center" valign="middle">Hikvision DS-2ZMN2007(C)</td>
-      	    	<td align="center" valign="middle"><img src="./result/camera.png"  width=25%></td>
-              	<td align="center" valign="middle">  
-                      <a 	href="http://steven1210.51sole.com/companynewsdetail_129276267.htm"> Camera </a> 		    		</td>
-      	</tr>
-  </table>
+## 1.3硬件
+
+<table >
+    	<tr>
+            	<th align="center" valign="middle">Item</th>
+            	<th align="center" valign="middle">Pics</th>
+            	<th align="center" valign="middle">Shopping Link</th>
+        </tr>
+    	<tr>
+    	    	<td align="center" valign="middle">Livox Horizon</td>
+        		<td align="center" valign="middle"><img src="./result/lidar.png" width=25% /></td>
+        		<td align="center" valign="middle">  <a href ="https://www.livoxtech.com/horizon"> Lidar </a> 		    		</td>
+    	</tr>
+    	<tr>
+          	 	 <td align="center" valign="middle">Hikvision DS-2ZMN2007(C)</td>
+    	    	<td align="center" valign="middle"><img src="./result/camera.png"  width=25%></td>
+            	<td align="center" valign="middle">  
+                    <a 	href="http://steven1210.51sole.com/companynewsdetail_129276267.htm"> Camera </a> 		    		</td>
+    	</tr>
+</table>
 
 **注意:由于Hikvision网络相机不支持SDK软触发，因此两个设备无法做时间同步，硬件配置适用于对时间同步性要求较低的任务**
+
+
 
 ## 二、使用方法
 1. 安装ROS
