@@ -1,15 +1,17 @@
 #include <ros/ros.h>
-#include <image_transport/image_transport.h>
+#include <mutex>
+
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
-#include <cv_bridge/cv_bridge.h>
-#include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <mutex>
+
+#include <sensor_msgs/image_encodings.h>
+#include <image_transport/image_transport.h>
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 
 // ///////////////////////////////////////////////////////////////////////
@@ -29,6 +31,7 @@ std::mutex mut_pc;
 //livox点云消息包含xyz和intensity
 pcl::PointCloud<pcl::PointXYZI>::Ptr raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
 pcl::PointCloud<pcl::PointXYZI>::Ptr linshi_raw_pcl_ptr(new pcl::PointCloud<pcl::PointXYZI>); 
+
 // pcl::PointCloud<pcl::PointXYZI> linshi_raw_pcl_ptr; 
 
 cv::Mat image_color;

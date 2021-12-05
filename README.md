@@ -23,8 +23,31 @@ ws_fusion_camera
 
 调试环境：
 * Ubuntu 18.04 ROS melodic. [ROS installation](http://wiki.ros.org/ROS/Installation)
+
 * PCL 1.8. [PCL installation](https://pointclouds.org/downloads/#linux)
+
+* OpenCV 3.2.0 [Opencv Installation](http://opencv.org)
+
 * 硬件: livox Horizon激光雷达 && Hikvision 网络相机DS-2ZMN2007(C)
+
+  <table >
+      	<tr>
+              	<th align="center" valign="middle">Item</th>
+              	<th align="center" valign="middle">Pics</th>
+              	<th align="center" valign="middle">Shopping Link</th>
+          </tr>
+      	<tr>
+      	    	<td align="center" valign="middle">Livox Horizon</td>
+          		<td align="center" valign="middle"><img src="./result/lidar.png" width=25% /></td>
+          		<td align="center" valign="middle">  <a href ="https://www.livoxtech.com/horizon"> Lidar </a> 		    		</td>
+      	</tr>
+      	<tr>
+            	 	 <td align="center" valign="middle">Hikvision DS-2ZMN2007(C)</td>
+      	    	<td align="center" valign="middle"><img src="./result/camera.png"  width=25%></td>
+              	<td align="center" valign="middle">  
+                      <a 	href="http://steven1210.51sole.com/companynewsdetail_129276267.htm"> Camera </a> 		    		</td>
+      	</tr>
+  </table>
 
 **注意:由于Hikvision网络相机不支持SDK软触发，因此两个设备无法做时间同步，硬件配置适用于对时间同步性要求较低的任务**
 
@@ -57,19 +80,17 @@ roslaunch hikvision_ros hik.launch ip_addr:=192.168.1.64 password:=xxx
 5. 运行color_pc数据融合节点，并在rviz中显示
 ```
 roslaunch color_pc fusion.launch
-``` 
+```
 
 ## 三、效果
-<table frame=void rules=none>
-<tr>
-    <td><p align="center"><img src="./result/result.png"  border=0 width=50%></p></td>
-    <td><p align="center"><img src="./result/integral.png" border=0 width=50%></p></td>
-</tr>
-<tr>
-    <th>融合效果</th>
-    <th>点云时间积分效果</th>
-</tr>
-</table>
+<img src="./result/result.png"  border=0 width=48%><img src="./result/integral.png" border=0 width=48%>
+
+<h6 align="center">单帧融合效果(左)，点云时间积分效果(右)</h6>
+
+
+
+
+
 
 ## 四、参考资料
 
