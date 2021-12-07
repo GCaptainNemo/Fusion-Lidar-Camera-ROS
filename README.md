@@ -98,11 +98,13 @@ roslaunch color_pc fusion_filter.launch
 
 
 ## 三、效果
-<img src="./result/result.gif"  border=0 width=48%><img src="./result/integral.gif" border=0 width=48%>
+<img src="./result/result.gif"  border=0 width=90%>
 
-<h6 align="center">单帧融合效果(左)，点云时间积分效果(右)</h6>
+<h6 align=center>单帧融合效果</h6>
 
+<img src="./result/integral.gif" border=0 width=90%>
 
+<h6 align="center">点云时间积分效果</h6>
 
 
 
